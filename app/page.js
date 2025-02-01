@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
+import { collection, addDoc } from "firebase/firestore";
 
 export default function Home() {
   const [items, setItems] = useState([
@@ -7,7 +8,34 @@ export default function Home() {
     { name: 'Movie Ticket', price: 15.80 },
     { name: 'Protein Bar', price: 3.99 }
   ]);
+  const [newItem, setNewItem] = useState({name:'', price:''});
   const [total, setTotal] = useState(0);
+
+  //Add items to database
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    /*
+    const name = e.target[0].value;
+    const price = e.target[1].value;
+    const newItem = { name, price: parseFloat(price) };
+    setItems([...items, newItem]);
+    e.target[0].value = '';
+    e.target[1].value = '';
+    */
+  };
+
+  //Read items from database
+  useEffect(() => {
+    const newTotal = items.reduce((acc, item) => acc + item.price, 0);
+    setTotal(newTotal);
+  }, [items]);
+
+  //Delete items from database
+  const handleDelete = (index) => {
+    const newItems = [...items];
+    newItems.splice(index, 1);
+    setItems(newItems);
+  };
 
   return (
       <main className="flex min-h-screen flex-col items-center justify-between sm:p-24 p-4">
@@ -15,8 +43,20 @@ export default function Home() {
           <h1 className='text-4xl p-4 text-center'>Expense Tracker</h1>
           <div className='bg-slate-800 p-4 rounded-lg'>
             <form className='grid grid-cols-6 items-center text-black'>
-              <input className='col-span-3 p-3 border' type="text" placeholder='Enter Item' />
-              <input className='col-span-2 p-3 border mx-3' type="text" placeholder='Enter $' />
+              <input
+                value={newItem.name}
+                onChange={(e) => setNewItem({...newItem, name: e.target.value })}
+                className='col-span-3 p-3 border'
+                type="text"
+                placeholder='Enter Item'
+              />
+              <input 
+                value={newItem.price}
+                onChange={(e) => setNewItem({...newItem, price: parseFloat(e.target.value) })}
+                className='col-span-2 p-3 border mx-3'
+                type="text"
+                placeholder='Enter $'
+              />
               <button className='text-white bg-slate-950 hover:bg-slate-900 p-3 text-xl' type='submit'>
                 Add
               </button>
