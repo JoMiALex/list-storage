@@ -12,8 +12,11 @@ export default function Home() {
   const [total, setTotal] = useState(0);
 
   //Add items to database
-  const handleSubmit = async (e) => {
+  const createItem = async (e) => {
     e.preventDefault();
+    if (newItem.name !== ' && newItem.price !== ') {
+      setItems([...items, newItem]);
+    }
     /*
     const name = e.target[0].value;
     const price = e.target[1].value;
@@ -57,7 +60,11 @@ export default function Home() {
                 type="text"
                 placeholder='Enter $'
               />
-              <button className='text-white bg-slate-950 hover:bg-slate-900 p-3 text-xl' type='submit'>
+              <button
+                onClick={createItem}
+                className='text-white bg-slate-950 hover:bg-slate-900 p-3 text-xl'
+                type='submit'
+              >
                 Add
               </button>
             </form>
