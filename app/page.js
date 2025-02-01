@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc } from "firebase/firestore";
+import { db } from './cfirebase';
 
 export default function Home() {
   const [items, setItems] = useState([
@@ -15,7 +16,11 @@ export default function Home() {
   const createItem = async (e) => {
     e.preventDefault();
     if (newItem.name !== ' && newItem.price !== ') {
-      setItems([...items, newItem]);
+      //Test setItems([...items, newItem]);
+      await addDoc(collection(db, 'items'), {
+        name: newItem.name.trim(),
+        price: newItem.price,
+      });
     }
     /*
     const name = e.target[0].value;
@@ -50,14 +55,14 @@ export default function Home() {
                 value={newItem.name}
                 onChange={(e) => setNewItem({...newItem, name: e.target.value })}
                 className='col-span-3 p-3 border'
-                type="text"
+                type='text'
                 placeholder='Enter Item'
               />
               <input 
                 value={newItem.price}
                 onChange={(e) => setNewItem({...newItem, price: parseFloat(e.target.value) })}
                 className='col-span-2 p-3 border mx-3'
-                type="text"
+                type='number'
                 placeholder='Enter $'
               />
               <button
