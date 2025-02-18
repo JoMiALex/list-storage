@@ -15,12 +15,13 @@ export default function Home() {
   //Add items to database
   const createItem = async (e) => {
     e.preventDefault();
-    if (newItem.name !== ' && newItem.price !== ') {
+    if (newItem.name !== '' && newItem.price !== '') {
       //Test setItems([...items, newItem]);
       await addDoc(collection(db, 'items'), {
         name: newItem.name.trim(),
         price: newItem.price,
       });
+      setNewItem({ name: '', price: '' });
     }
     /*
     const name = e.target[0].value;
