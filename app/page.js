@@ -1,13 +1,13 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc, querySnapshot, query, onSnapshot} from "firebase/firestore";
 import { db } from './cfirebase';
 
 export default function Home() {
   const [items, setItems] = useState([
-    { name: 'Icee', price: 8.00 },
-    { name: 'Movie Ticket', price: 15.80 },
-    { name: 'Protein Bar', price: 3.99 }
+    // { name: 'Icee', price: 8.00 },
+    // { name: 'Movie Ticket', price: 15.80 },
+    // { name: 'Protein Bar', price: 3.99 }
   ]);
   const [newItem, setNewItem] = useState({name:'', price:''});
   const [total, setTotal] = useState(0);
@@ -35,8 +35,21 @@ export default function Home() {
 
   //Read items from database
   useEffect(() => {
-    const newTotal = items.reduce((acc, item) => acc + item.price, 0);
-    setTotal(newTotal);
+    // const newTotal = items.reduce((acc, item) => acc + item.price, 0);
+    // setTotal(newTotal);
+    const q = query(collection(db, 'items'));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const itemsArr = [];
+      querySnapshot.forEach((doc) => {
+        itemsArr.push({ ...doc.data(), id: doc.id });
+      });
+      setItems(itemsArr);
+
+      //Calculate total
+      const newTotal = itemsArr.reduce((acc, item) => acc + item.price, 0);
+      setTotal(newTotal);
+      return () => unsubscribe();
+    });
   }, [items]);
 
   //Delete items from database
