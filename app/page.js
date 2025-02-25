@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, getDoc, querySnapshot, query, onSnapshot} from "firebase/firestore";
+import { collection, addDoc, getDoc, querySnapshot, query, onSnapshot,deleteDoc, doc} from "firebase/firestore";
 import { db } from './cfirebase';
 
 export default function Home() {
@@ -53,10 +53,8 @@ export default function Home() {
   }, [items]);
 
   //Delete items from database
-  const handleDelete = (index) => {
-    const newItems = [...items];
-    newItems.splice(index, 1);
-    setItems(newItems);
+  const handleDelete = async (index) => {
+    await deleteDoc(doc(db, 'items', index));
   };
 
   return (
@@ -94,7 +92,7 @@ export default function Home() {
                     <span className='capitalize'>{item.name}</span>
                     <span>${item.price}</span>
                   </div>
-                  <button className='ml-8 p-4 border-l-2 border-slate-900 hover:bg-slate-900 text-sm'>
+                  <button onClick={handleDelete(item.id)} className='ml-8 p-4 border-l-2 border-slate-900 hover:bg-slate-900 text-sm'>
                     X
                   </button>
                 </li>
