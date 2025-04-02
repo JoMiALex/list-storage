@@ -33,7 +33,7 @@ export default function Home() {
     */
   };
 
-  //Read items from database
+  //Read items from database //TODO:  Fix this
   useEffect(() => {
     // const newTotal = items.reduce((acc, item) => acc + item.price, 0);
     // setTotal(newTotal);
