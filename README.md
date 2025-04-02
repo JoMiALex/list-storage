@@ -4,7 +4,7 @@ Database: FireBase
 Framework: NextJS
 
 ## Purpose
-This project is a test of creating a website with lists that will store data to firebase for later access.
+This project is a test of creating a website with lists that will store data to firebase for later access. In Progress
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
